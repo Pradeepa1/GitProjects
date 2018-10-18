@@ -26,89 +26,97 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 
 public class Automation extends MethodsToReuse {
 
-     static Properties pro;
-    
-	public static void LoginToSFDC() throws Exception
-	{		
-		logger = extent.createTest("loginToSFDC");		 
-		launchApplication("chrome");
+	static String Propertypath="C:\\Users\\prade\\git\\repository3\\GitProjects\\Salesforce\\src\\test\\resources\\DataFiles\\configuration.properties";
+	   static String ObjRepoPath="C:\\Users\\prade\\git\\repository3\\GitProjects\\Salesforce\\src\\test\\resources\\ObjectRepositories\\ObjRep.properties";
+		public static void LoginToSFDC() throws Exception
+		{
+			logger = extent.createTest("loginToSFDC");
+			Properties pro=loadpropertyfile(Propertypath);
+				
+			System.setProperty("webdriver.gecko.driver","./src/Utility/geckodriver.exe");
+			driver=new FirefoxDriver();
+			driver.get(pro.getProperty("Url"));
+			logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
+			driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
+			Properties ObjRepo=loadpropertyfile(ObjRepoPath);
+			//System.out.println("Entering the ObjRepo");
+			//System.out.println(ObjRepo.getProperty("Salesforce.username.textbox"));
+			WebElement username=driver.findElement(getLocator("Salesforce.username.textbox",ObjRepo));		
+			//CredentialsFromProperties(username);
+			//enterText(username,"pradeepajul11@gmail.com","Username");
+			Thread.sleep(1000);
+			String u=pro.getProperty("Username");
+			enterText(username,u,"Username");
+			
+			Thread.sleep(1000);
+			WebElement password=driver.findElement(getLocator("Salesforce.password.textbox",ObjRepo));
+			//CredentialsFromProperties("password");
+			String p=pro.getProperty("Password");
+			enterText(password,p,"password");
+			
+			WebElement loginButton=driver.findElement(getLocator("Salesforce.login.button",ObjRepo));
+			click(loginButton,"LoginButton");	
+			driver.quit();
+		logger.log(Status.PASS,MarkupHelper.createLabel("Firefox is closed",ExtentColor.GREEN));
+		
+		}	
+
+		public static void Validate_Login_Error_Message_5() throws Exception 
+		{
+		logger=extent.createTest("Validate Error Message 5");
+		Properties pro=loadpropertyfile(Propertypath);
+		Properties ObjRepo=loadpropertyfile(ObjRepoPath);
+		launchApplication("firefox");
 		logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
 		driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
-		WebElement username=driver.findElement(By.xpath("//input[@id='username']"));		
-		//CredentialsFromProperties(username);
-		enterText(username,"pradeepajul11@gmail.com","Username");
-		Thread.sleep(1000);
-		WebElement password=driver.findElement(By.xpath("//input[@id='password']"));
-		//CredentialsFromProperties("password");
-		enterText(password,"p*6194329354","password");
-		WebElement loginButton=driver.findElement(By.xpath("//input[@id='Login']"));
-		click(loginButton,"LoginButton");	
-		driver.quit();
-	logger.log(Status.PASS,MarkupHelper.createLabel("Firefox is closed",ExtentColor.GREEN));
-	
-	}
-	
-     
-	public static void Validate_Login_Error_Message_5() 
-	{
-	logger=extent.createTest("Validate Error Message 5");
-	
-	launchApplication("chrome");
-	logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
-	driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
-	
-	WebElement userName=driver.findElement(By.xpath("//input[@id='username']"));
-enterText(userName,"123@gmail.com","Username");
-
-	WebElement Password=driver.findElement(By.xpath("//input[@id='password']"));
-enterText(Password,"22321","password");
-	
-	WebElement loginButton=driver.findElement(By.xpath("//input[@id='Login']"));
-
-click(loginButton,"LoginButton");
-	
-	String ErrorMsg=driver.findElement(By.xpath("//div[@id='error']")).getText();
 		
-	String ExpectedError="Please check your username and password. If you still can't log in, contact your Salesforce administrator.";
-validateError_Msg(ErrorMsg, ExpectedError);	
-driver.quit();
-logger.log(Status.PASS,MarkupHelper.createLabel("Firefox is closed",ExtentColor.GREEN));
-}
-	
-     
-	public static void Check_RemeberMe_3()throws Exception
-	{
-	logger=extent.createTest("Check RememberMe 3");
-	
-	launchApplication("chrome");
-	logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
-	driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
-	Thread.sleep(1000);
-	WebElement userName=driver.findElement(By.xpath("//input[@id='username']"));
-enterText(userName,"pradeepajul11@gmail.com","Username");
-	Thread.sleep(1000);
-	WebElement Password=driver.findElement(By.xpath("//input[@id='password']"));
-enterText(Password,"p*6194329354","password");
-	Thread.sleep(1000);
-	WebElement Remember=driver.findElement(By.xpath("//input[@id='rememberUn']"));
+		WebElement userName=driver.findElement(getLocator("Salesforce.username.textbox",ObjRepo));
+	enterText(userName,"123@gmail.com","Username");
 
-click(Remember,"RememberBox");
-	Thread.sleep(1000);
-	WebElement loginButton=driver.findElement(By.xpath("//input[@id='Login']"));
-click(loginButton,"LoginButton");
-	Thread.sleep(3000);	
-	WebElement UserMenu = driver.findElement((By.xpath("//*[@id=\"userNav-arrow\"]")));
-//visibilityOfElementWait(UserMenu);	
-click(UserMenu,"UserMenu");
-	
-	Thread.sleep(3000);
-	WebElement logout=driver.findElement(By.xpath("//div[@id='userNav-menuItems']/a[5]"));
-	Thread.sleep(3000);
-click(logout,"LogoutButton");
-driver.quit();
-logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor.GREEN));
+		WebElement Password=driver.findElement(getLocator("Salesforce.password.textbox",ObjRepo));
+	enterText(Password,"22321","password");
+		
+		WebElement loginButton=driver.findElement(getLocator("Salesforce.login.button",ObjRepo));
+
+	click(loginButton,"LoginButton");
+		
+		String ErrorMsg=driver.findElement(getLocator("Salesforce.errormsg",ObjRepo)).getText();
+		
+		String ExpectedError="Please check your username and password. If you still can't log in, contact your Salesforce administrator.";
+	validateError_Msg(ErrorMsg, ExpectedError);	
+	driver.quit();
+	logger.log(Status.PASS,MarkupHelper.createLabel("Firefox is closed",ExtentColor.GREEN));
 	}
-    
+		
+
+		public static void Check_RemeberMe_3()throws Exception
+		{
+		logger=extent.createTest("Check RememberMe 3");
+		Properties pro=loadpropertyfile(Propertypath);
+		Properties ObjRepo=loadpropertyfile(ObjRepoPath);
+		launchApplication("firefox");
+		
+		logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
+		driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
+		
+		WebElement username=driver.findElement(getLocator("Salesforce.username.textbox",ObjRepo));		
+		String u=pro.getProperty("Username");
+		enterText(username,u,"Username");
+		
+		Thread.sleep(1000);
+		WebElement password=driver.findElement(getLocator("Salesforce.password.textbox",ObjRepo));
+		String p=pro.getProperty("Password");
+		enterText(password,p,"password");
+		
+		WebElement Remember=driver.findElement(getLocator("Salesforce.Remember.checkbox",ObjRepo));
+	    click(Remember,"RememberBox");
+		Thread.sleep(1000);
+		WebElement logout=driver.findElement(getLocator("Salesforce.logout.button",ObjRepo));
+		Thread.sleep(3000);
+		click(logout,"LogoutButton");
+		driver.quit();
+		logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor.GREEN));
+		}
 	public static void Forgot_Password() throws Exception
 	{
 		logger=extent.createTest("Forgot Password");
@@ -414,9 +422,9 @@ logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor
 		System.out.println("Entering account");
 		driver.findElement(By.xpath("//a[text()='Accounts']")).click();
 		System.out.println("closing");
-		Thread.sleep(1000);s
-		WebElement Merge=driver.findElement(By.xpath(" //a[contains(text(),'Merge Accounts')]"));
-		click(Merge,"Merge");
+		Thread.sleep(1000);
+		WebElement Merg=driver.findElement(By.xpath("//a[contains(text(),'Merge Accounts')]"));
+		click(Merg,"Merge");
 		WebElement AccountToMerge=driver.findElement(By.xpath("//input[@id='srch']"));
 		enterText(AccountToMerge,"AccountName1","Alphabetstomerge");
 		WebElement click=driver.findElement(By.xpath("//input[@value='Find Accounts']"));

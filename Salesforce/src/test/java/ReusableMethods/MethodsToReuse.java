@@ -42,7 +42,7 @@ public class MethodsToReuse {
 	static ExtentReports extent;
 	static ExtentTest logger;
 	static WebDriver driver;
-	public static final String propertyPath="C:\\Users\\prade\\eclipse-workspace\\SalesforceAutomation\\src\\test\\resources\\DataFiles\\configuration.properties";
+	
 	/*Methodname: Enter text
 	 * obj--->Enter the webelementname
 	 * textval----->Enter the text for the textfield
@@ -229,24 +229,49 @@ public class MethodsToReuse {
 			}
 		}}  
   }
-  public static String CredentialsFromProperties(String str) throws Exception
-  {
-	BufferedReader bf=new BufferedReader(new FileReader(propertyPath));
-	Properties pro=new Properties();
-	pro.load(bf);
-	
-	String username = null,password = null;
-	if(str.equals(username))
-	{
-	str=pro.getProperty("Username");
-	}
-	else if(str.equals(password))
-	{
-	 str=pro.getProperty("Password");
-	}
-	bf.close();
-	return str;
-	 }
+  
+  public static Properties loadpropertyfile(String path) throws Exception 
+  {	
+  	Properties pro=new Properties();
+  	BufferedReader bf=new BufferedReader(new FileReader(path));
+  	pro.load(bf);	
+  	return pro;
+  	}
+  public static By getLocator(String strElement,Properties p) throws Exception {
+      
+     
+	// retrieve the specified object from the object list
+      
+     String locator = p.getProperty(strElement);
+       
+      // extract the locator type and value from the object
+      String locatorType = locator.split(":")[0];
+      String locatorValue = locator.split(":")[1];
+       
+      // for testing and debugging purposes
+      System.out.println("Retrieving object of type '" + locatorType + "' and value '" + locatorValue + "' from the object map");
+       
+      // return a instance of the By class based on the type of the locator
+      // this By can be used by the browser object in the actual test
+      if(locatorType.toLowerCase().equals("id"))
+          return By.id(locatorValue);
+      else if(locatorType.toLowerCase().equals("name"))
+          return By.name(locatorValue);
+      else if((locatorType.toLowerCase().equals("classname")) || (locatorType.toLowerCase().equals("class")))
+          return By.className(locatorValue);
+      else if((locatorType.toLowerCase().equals("tagname")) || (locatorType.toLowerCase().equals("tag")))
+          return By.className(locatorValue);
+      else if((locatorType.toLowerCase().equals("linktext")) || (locatorType.toLowerCase().equals("link")))
+          return By.linkText(locatorValue);
+      else if(locatorType.toLowerCase().equals("partiallinktext"))
+          return By.partialLinkText(locatorValue);
+      else if((locatorType.toLowerCase().equals("cssselector")) || (locatorType.toLowerCase().equals("css")))
+          return By.cssSelector(locatorValue);
+      else if(locatorType.toLowerCase().equals("xpath"))
+          return By.xpath(locatorValue);
+      else
+          throw new Exception("Unknown locator type '" + locatorType + "'");
+  }
   }
 	  
 
