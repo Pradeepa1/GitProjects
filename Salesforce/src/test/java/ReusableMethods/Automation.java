@@ -319,7 +319,11 @@ logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor
 		driver.findElement(By.xpath("//input[@id='username']")).sendKeys("pradeepajul11@gmail.com");
 		driver.findElement(By.xpath("//input[@id='password']")).sendKeys("p*6194329354");
 		driver.findElement(By.xpath("//input[@id='Login']")).click();
-		driver.findElement(By.xpath("//a[@title='Accounts Tab']")).click();
+		driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
+		System.out.println("Entering account");
+		driver.findElement(By.xpath("//a[text()='Accounts']")).click();
+		System.out.println("closing");
+		Thread.sleep(1000);
 		WebElement createnewbutton=driver.findElement(By.xpath("//div[@id='createNewButton']"));
 		wait.until(ExpectedConditions.elementToBeClickable(createnewbutton));
 		click(createnewbutton,"Create new button");
@@ -333,16 +337,19 @@ logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor
 		logger.log(Status.PASS, MarkupHelper.createLabel("Closing the firefox",ExtentColor.GREEN));
 		}
     
-	public static void CreateNewViewInCreateAccount()
+	public static void CreateNewViewInCreateAccount() throws Exception
 	{
 			logger=extent.createTest("CReateNewViewInCreateAccount");	
-			launchApplication("chrome");
+			launchApplication("firefox");
 			logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
 			WebDriverWait wait=new WebDriverWait(driver,30);
 			driver.findElement(By.xpath("//input[@id='username']")).sendKeys("pradeepajul11@gmail.com");
 			driver.findElement(By.xpath("//input[@id='password']")).sendKeys("p*6194329354");
 			driver.findElement(By.xpath("//input[@id='Login']")).click();
-			driver.findElement(By.xpath("//div/nav/ul//a[text()='Accounts']")).click();
+			System.out.println("Entering account");
+			driver.findElement(By.xpath("//a[text()='Accounts']")).click();
+			System.out.println("closing");
+			Thread.sleep(1000);
 			WebElement CreateNewView=driver.findElement(By.xpath("//div/span/span/a[text()='Create New View']"));
 			click(CreateNewView,"CreateNewView");
 			WebElement ViewName=driver.findElement(By.xpath("//input[@id='fname']"));
@@ -359,13 +366,20 @@ logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor
 	public static void EditViewInCreateAccount() throws Exception 
 	{
 		logger=extent.createTest("CReateEditViewInCreateAccount");	
-		launchApplication("chrome");
+		launchApplication("firefox");
 		logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
 		WebDriverWait wait=new WebDriverWait(driver,30);
 		driver.findElement(By.xpath("//input[@id='username']")).sendKeys("pradeepajul11@gmail.com");
 		driver.findElement(By.xpath("//input[@id='password']")).sendKeys("p*6194329354");
 		driver.findElement(By.xpath("//input[@id='Login']")).click();
-		driver.findElement(By.xpath("//div/nav/ul//a[text()='Accounts']")).click();
+		Thread.sleep(1000);
+		System.out.println("Entering account");
+		driver.findElement(By.xpath("//a[text()='Accounts']")).click();
+		System.out.println("closing");
+		Thread.sleep(1000);
+//		WebDriverWait wait1 = new WebDriverWait(driver, 500);
+//		wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/nav/ul//a[text()='Accounts']"))).click();
+		
 		WebElement Edit=driver.findElement(By.xpath("//div/span/span/a[text()='Edit']"));
 		click(Edit,"EditButton");
 		driver.findElement(By.xpath("//input[@id='fname']")).sendKeys("Deepa");	
@@ -397,8 +411,10 @@ logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor
 		driver.findElement(By.xpath("//input[@id='username']")).sendKeys("pradeepajul11@gmail.com");
 		driver.findElement(By.xpath("//input[@id='password']")).sendKeys("p*6194329354");
 		driver.findElement(By.xpath("//input[@id='Login']")).click();
-		driver.findElement(By.xpath("//div/nav/ul//a[text()='Accounts']")).click();
-		Thread.sleep(1000);	
+		System.out.println("Entering account");
+		driver.findElement(By.xpath("//a[text()='Accounts']")).click();
+		System.out.println("closing");
+		Thread.sleep(1000);s
 		WebElement Merge=driver.findElement(By.xpath(" //a[contains(text(),'Merge Accounts')]"));
 		click(Merge,"Merge");
 		WebElement AccountToMerge=driver.findElement(By.xpath("//input[@id='srch']"));

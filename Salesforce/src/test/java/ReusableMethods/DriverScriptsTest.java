@@ -9,8 +9,8 @@ public class DriverScriptsTest extends Automation
 	@Test
 	public static void method() throws Exception 
 	{
-	
-	String pathToreadXls="C:\\Users\\prade\\eclipse-workspace\\Salesforce\\src\\test\\resources\\Utility\\TestSuit.xls";
+	String path=System.getProperty("user.dir");
+	String pathToreadXls=path+".\\src\\test\\resources\\Utility\\TestSuit.xls";
 	String[][] recdata = MethodsToReuse.readSheet(pathToreadXls,"Sheet1");	
 	String testCase =recdata[0][1];
 	ExtentReport("Sprint1");
