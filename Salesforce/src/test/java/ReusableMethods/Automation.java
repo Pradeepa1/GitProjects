@@ -26,15 +26,15 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 
 public class Automation extends MethodsToReuse {
 
-	static String Propertypath="C:\\Users\\prade\\git\\repository3\\GitProjects\\Salesforce\\src\\test\\resources\\DataFiles\\configuration.properties";
-	   static String ObjRepoPath="C:\\Users\\prade\\git\\repository3\\GitProjects\\Salesforce\\src\\test\\resources\\ObjectRepositories\\ObjRep.properties";
+static String Propertypath="C:\\Users\\prade\\git\\repository3\\GitProjects\\Salesforce\\src\\test\\resources\\DataFiles\\configuration.properties";
+static String ObjRepoPath="C:\\Users\\prade\\git\\repository3\\GitProjects\\Salesforce\\src\\test\\resources\\ObjectRepositories\\ObjRep.properties";
 		public static void LoginToSFDC() throws Exception
 		{
 			logger = extent.createTest("loginToSFDC");
 			Properties pro=loadpropertyfile(Propertypath);
-				
-			System.setProperty("webdriver.gecko.driver","./src/Utility/geckodriver.exe");
-			driver=new FirefoxDriver();
+			launchApplication("firefox");
+			logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
+			driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
 			driver.get(pro.getProperty("Url"));
 			logger.log(Status.PASS, MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
 			driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
@@ -111,6 +111,10 @@ public class Automation extends MethodsToReuse {
 		WebElement Remember=driver.findElement(getLocator("Salesforce.Remember.checkbox",ObjRepo));
 	    click(Remember,"RememberBox");
 		Thread.sleep(1000);
+		WebElement loginButton=driver.findElement(getLocator("Salesforce.login.button",ObjRepo));
+
+		click(loginButton,"LoginButton");
+		
 		WebElement logout=driver.findElement(getLocator("Salesforce.logout.button",ObjRepo));
 		Thread.sleep(3000);
 		click(logout,"LogoutButton");
@@ -354,9 +358,11 @@ logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor
 			driver.findElement(By.xpath("//input[@id='username']")).sendKeys("pradeepajul11@gmail.com");
 			driver.findElement(By.xpath("//input[@id='password']")).sendKeys("p*6194329354");
 			driver.findElement(By.xpath("//input[@id='Login']")).click();
+			driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
 			System.out.println("Entering account");
 			driver.findElement(By.xpath("//a[text()='Accounts']")).click();
 			System.out.println("closing");
+			Thread.sleep(1000);
 			Thread.sleep(1000);
 			WebElement CreateNewView=driver.findElement(By.xpath("//div/span/span/a[text()='Create New View']"));
 			click(CreateNewView,"CreateNewView");
@@ -380,10 +386,11 @@ logger.log(Status.PASS, MarkupHelper.createLabel("Firefox is closed",ExtentColor
 		driver.findElement(By.xpath("//input[@id='username']")).sendKeys("pradeepajul11@gmail.com");
 		driver.findElement(By.xpath("//input[@id='password']")).sendKeys("p*6194329354");
 		driver.findElement(By.xpath("//input[@id='Login']")).click();
-		Thread.sleep(1000);
+		driver.manage().timeouts().implicitlyWait(60,TimeUnit.SECONDS);
 		System.out.println("Entering account");
 		driver.findElement(By.xpath("//a[text()='Accounts']")).click();
 		System.out.println("closing");
+		
 		Thread.sleep(1000);
 //		WebDriverWait wait1 = new WebDriverWait(driver, 500);
 //		wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/nav/ul//a[text()='Accounts']"))).click();
