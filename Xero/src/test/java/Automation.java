@@ -10,7 +10,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.Status;
@@ -53,10 +56,10 @@ public static void IncorrectPassword() throws Exception
 	Properties ObjRep=loadproperty(ObjRepoPath);
 	Thread.sleep(3000);
 	WebElement user=driver.findElement(getLocator("Xerox.user.textbox",ObjRep));
-	String u=pro.getProperty("IncorrectUser");
+	String u=pro.getProperty("UserName");
 	enterText(user,u,"UserNameForXerox");
 	WebElement pwd=driver.findElement(getLocator("Xerox.password.textbox",ObjRep));
-	String p=pro.getProperty("Password");
+	String p=pro.getProperty("IncorrectPassword");
 	enterText(pwd,p,"PasswordForXerox");
 	Thread.sleep(1000);
 	String img=ScreenShot(driver);
@@ -66,6 +69,7 @@ public static void IncorrectPassword() throws Exception
 	String Expected="Your Email or Password is incorrect";
 	WebElement error=driver.findElement(getLocator("Xerox.errormsg1.textbox",ObjRep));
 	String actual=error.getText();
+	System.out.println(actual);
 	Thread.sleep(1000);
 	compareError(actual,Expected);
 	driver.close();
@@ -82,11 +86,12 @@ public static void IncorrectEmail() throws Exception
 	driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
 	Properties ObjRep=loadproperty(ObjRepoPath);
 	WebElement user=driver.findElement(getLocator("Xerox.user.textbox",ObjRep));
-	String u=pro.getProperty("UserName");
-	enterText(user,u,"UserNameForXerox");
-	WebElement IncorrectPassword=driver.findElement(getLocator("Xerox.incorrectpwd.textbox",ObjRep));
-	String p=pro.getProperty("IncorrectPassword");
-	enterText(IncorrectPassword,p,"IncorrectPwd");
+	String u=pro.getProperty("IncorrectUser");
+	enterText(user,u,"IncorrectUserName");
+	WebElement Password=driver.findElement(getLocator("Xerox.password.textbox",ObjRep));
+	String p=pro.getProperty("Password");
+	enterText(Password,p,"Pwd");
+	Thread.sleep(1000);
 	String img=ScreenShot(driver);
 	logger.addScreenCaptureFromPath(img);
 	WebElement login=driver.findElement(getLocator("Xerox.login.button",ObjRep));
@@ -94,6 +99,7 @@ public static void IncorrectEmail() throws Exception
 	String Expected="Your Email or Password is incorrect";
 	WebElement error=driver.findElement(getLocator("Xerox.errormsg1.textbox",ObjRep));
 	String actual=error.getText();
+	System.out.println(actual);
 	Thread.sleep(1000);
 	compareError(actual,Expected);
 	driver.close();	
@@ -146,7 +152,7 @@ public static void SignUpToXDC() throws Exception
 	selectByText(country,"United States");
 	WebElement checkbox=driver.findElement(getLocator("Xerox.freetrail.checkbox",ObjRep));
 	click(checkbox,"CheckboxinTrail");
-	WebDriverWait wait=new WebDriverWait(driver,40);
+	WebDriverWait wait=new WebDriverWait(driver,1000);
 	wait.until(ExpectedConditions.elementToBeSelected(checkbox));
 	WebElement submit=driver.findElement(getLocator("Xerox.freetrail.submit.button",ObjRep));
 	click(submit,"submitbutton");
@@ -154,6 +160,7 @@ public static void SignUpToXDC() throws Exception
 }
 public static void SignUpToXdc2() throws Exception
 {
+	//error
 	logger=extent.createTest("SignUpToXDC2");
 	Browser("firefox");
 	logger.log(Status.PASS,MarkupHelper.createLabel("Application is launched",ExtentColor.GREEN));
@@ -162,6 +169,7 @@ public static void SignUpToXdc2() throws Exception
 	Properties ObjRep=loadproperty(ObjRepoPath);
 	WebElement freetrail=driver.findElement(getLocator("Xerox.freetrail.button",ObjRep));
 	click(freetrail,"freetrail");
+	Thread.sleep(1000);
 	WebElement submit=driver.findElement(getLocator("Xerox.freetrail.submit.button",ObjRep));
 	click(submit,"submitbutton");
 	driver.manage().timeouts().implicitlyWait(40,TimeUnit.SECONDS);
@@ -182,30 +190,32 @@ public static void SignUpToXdc2() throws Exception
 	String actual4=driver.findElement(getLocator("Xerox.freetrail.error4",ObjRep)).getText();
 	
 	compareError(actual1,Expected1);
-	compareError(actual1,Expected2);
-	compareError(actual1,Expected3);
-	compareError(actual1,Expected4);
-	WebElement firstname=driver.findElement(getLocator("Xerox.freetrail.firstname.textbox",ObjRep));
-	String f=pro.getProperty("FirstName");
-	enterText(firstname,f,"firstnameintrial");
-	
-	WebElement lastname=driver.findElement(getLocator("Xerox.freetrail.lastname.textbox",ObjRep));
-	String l=pro.getProperty("LastName");
-	enterText(lastname,l,"lastnameintrial");
+	compareError(actual2,Expected2);
+	compareError(actual3,Expected3);
+	compareError(actual4,Expected4);
+//	WebElement firstname=driver.findElement(getLocator("Xerox.freetrail.firstname.textbox",ObjRep));
+//	String f=pro.getProperty("FirstName");
+//	enterText(firstname,f,"firstnameintrial");
+//	
+//	WebElement lastname=driver.findElement(getLocator("Xerox.freetrail.lastname.textbox",ObjRep));
+//	String l=pro.getProperty("LastName");
+//	enterText(lastname,l,"lastnameintrial");
 	
 	WebElement email=driver.findElement(getLocator("Xerox.freetrail.email.textbox",ObjRep));
 	String e=pro.getProperty("WrongEmail");
-	enterText(email,e,"Wrongemail");
+	System.out.println("value:"+e);
+	enterText(email,e,"Invalidemail");
 	Thread.sleep(1000);
-	WebElement phone=driver.findElement(getLocator("Xerox.freetrail.phoneno.textbox",ObjRep));
-	String p=pro.getProperty("Phone");
-	enterText(phone,p,"Phonenointrial");
-	Thread.sleep(3000);
+//	WebElement phone=driver.findElement(getLocator("Xerox.freetrail.phoneno.textbox",ObjRep));
+//	String p=pro.getProperty("Phone");
+//	enterText(phone,p,"Phonenointrial");
+//	Thread.sleep(3000);
 	WebElement termsaccepted=driver.findElement(getLocator("Xerox.freetrial.termsaccepted",ObjRep));
 	click(termsaccepted,"TermsAccepted");
+	Thread.sleep(2000);
 	String Expected="Email address is invalid";
 	Thread.sleep(2000);
-	System.out.println("hi");
+	System.out.println("hoe");
 	System.out.println("Barcode cannot be checked");
 	
 //	String actual=driver.findElement(getLocator("Xerox.freetrail.error1",ObjRep)).getText();
@@ -226,25 +236,13 @@ public static void SignUpToXdc3() throws Exception
 	driver.manage().timeouts().implicitlyWait(40,TimeUnit.SECONDS);
 	WebElement freetrail=driver.findElement(getLocator("Xerox.freetrail.button",ObjRep));
 	click(freetrail,"freetrail");
+	Thread.sleep(3000);
 	String mainwindow=driver.getWindowHandle();
 	System.out.println(mainwindow);
 	WebElement termsofuse=driver.findElement(getLocator("Xerox.freetrial.termsofuse",ObjRep));
 	click(termsofuse,"TermsOfUse");
 	String currentwindow=driver.getWindowHandle();
 	windowHandle(mainwindow,currentwindow);
-//	Set<String> allwindows=driver.getWindowHandles();
-//	Iterator it=allwindows.iterator();
-//	while(it.hasNext())
-//	{
-//		currentwindow=it.next().toString();
-//		if(!currentwindow.equals(mainwindow))
-//		{
-//			driver.switchTo().window(currentwindow);
-//			Thread.sleep(1000);
-//			driver.close();
-//		}
-//	}
-	
 	driver.switchTo().window(mainwindow);
 	logger.log(Status.PASS, MarkupHelper.createLabel("Comes back to Parentwindow",ExtentColor.GREEN));
 	WebElement privacy=driver.findElement(getLocator("Xerox.freetrial.privacy",ObjRep));
@@ -265,6 +263,7 @@ public static void SignUpToXdc4() throws Exception
 	Properties ObjRep=loadproperty(ObjRepoPath);
 	WebElement freetrail=driver.findElement(getLocator("Xerox.freetrail.button",ObjRep));
 	click(freetrail,"freetrail");
+	Thread.sleep(1000);
 	WebElement offer=driver.findElement(getLocator("Xerox.freetrial.offer",ObjRep));
 	click(offer,"offerlink");
 	driver.quit();
@@ -329,6 +328,7 @@ public static void TestAllTabsPage() throws Exception
 	System.out.println("1000");
 	WebElement noti=driver.findElement(getLocator("Xerox.home.notifications",ObjRep));
 	click(noti,"notiTab");
+	driver.quit();
 	logger.log(Status.PASS,MarkupHelper.createLabel("All tabs are checked",ExtentColor.GREEN));
 		
 }
@@ -389,21 +389,21 @@ public static void TestUploadProfileImg() throws Exception
 	WebElement profl=driver.findElement(getLocator("Xerox.home.profile",ObjRep));
 	Thread.sleep(1000);
 	click(profl,"profile");
-	WebElement upload=driver.findElement(getLocator("Xerox.profile.upload",ObjRep));
-	
+	WebElement upload=driver.findElement(getLocator("Xerox.profile.upload",ObjRep));	
 	wait.until(ExpectedConditions.elementToBeClickable(upload));
 	click(upload,"UploadProfile");
 	WebElement browse=driver.findElement(getLocator("Xerox.profile.browse",ObjRep));
 	Thread.sleep(2000);
+	wait.until(ExpectedConditions.elementToBeClickable(browse));
+	click(browse,"browse");
+	Thread.sleep(4000);
+//	Actions a=new Actions((WebDriver) browse);
+//	a.moveToElement(browse).build().perform();
+//	browse.sendKeys("img.png");
+//	Thread.sleep(3000);
 	String img=ScreenShot(driver);
 	logger.addScreenCaptureFromPath(img);
-	
-//	wait.until(ExpectedConditions.elementToBeClickable(browse));
-//	click(browse,"browse");
-//	Thread.sleep(4000);
-//	browse.sendKeys("img.png");
-//	Thread.sleep(1000);
-	driver.quit();
+	//driver.quit();
 }
 public static void AddAnotherOrganization() throws Exception
 {
@@ -449,7 +449,7 @@ public static void AddAnotherOrganization() throws Exception
 	r.keyRelease(KeyEvent.VK_TAB);
 	Thread.sleep(1000);
 	WebElement accsw=driver.findElement(getLocator("Xerox.newuser.accsw",ObjRep));
-	click(accsw,"accsw");
+	click(accsw,"accsw");Thread.sleep(1000);
 	System.out.println("dhf");
 	//selectByText(accsw,"Wave");	
 	System.out.println("bhsab");
@@ -508,16 +508,19 @@ r.keyRelease(KeyEvent.VK_TAB);
 Thread.sleep(1000);
 WebElement accsw=driver.findElement(getLocator("Xerox.newuser.accsw",ObjRep));
 click(accsw,"accsw");
-System.out.println("dhf");
-//selectByText(accsw,"Wave");	
-System.out.println("bhsab");
-//wait.until(ExpectedConditions.elementToBeClickable(accsw));
-Thread.sleep(1000);
-WebElement waveoption=driver.findElement(getLocator("Xerox.newuser.optionwave",ObjRep));
-//click(waveoption,"waveoption");
-System.out.println("Entering");
-//selectByText(waveoption,"Wave");	
-wait.until(ExpectedConditions.elementToBeClickable(waveoption));
+WebElement wave=driver.findElement(By.xpath("//ul/li[@class='x-boundlist-item x-boundlist-item-over']")); 
+wave.findElement(By.xpath("//ul/li[@class='x-boundlist-item x-boundlist-item-over']")).click();
+//selectByText(wave,"Wave");
+//System.out.println("dhf");
+////selectByText(accsw,"Wave");	
+//System.out.println("bhsab");
+////wait.until(ExpectedConditions.elementToBeClickable(accsw));
+//Thread.sleep(3000);
+//WebElement waveoption=driver.findElement(getLocator("Xerox.newuser.optionwave",ObjRep));
+////click(waveoption,"waveoption");		
+//System.out.println("Entering");
+////selectByText(waveoption,"Wave");	
+//wait.until(ExpectedConditions.elementToBeClickable(waveoption));
 
 WebElement buynow=driver.findElement(getLocator("Xerox.user.buynow",ObjRep));
 Thread.sleep(1000);
@@ -575,7 +578,7 @@ public static void AddOrgStarterPlan() throws Exception
 	//selectByText(accsw,"Wave");	
 	System.out.println("bhsab");
 	//wait.until(ExpectedConditions.elementToBeClickable(accsw));
-	Thread.sleep(1000);
+	Thread.sleep(3000);
 	WebElement waveoption=driver.findElement(getLocator("Xerox.newuser.optionwave",ObjRep));
 	//click(waveoption,"waveoption");
 	System.out.println("Entering");
@@ -586,19 +589,33 @@ public static void AddOrgStarterPlan() throws Exception
 	Thread.sleep(1000);
 	click(buynow,"buynow");
 	wait.until(ExpectedConditions.elementToBeClickable(buynow));
+	Thread.sleep(4000);
+	driver.findElement(By.xpath("//section[@id='Starter']//div[@class='xui-styledcheckboxradio--radio']")).click();
+	Thread.sleep(3000);
+	WebElement contbilling=driver.findElement(getLocator("Xerox.newuser.contbilling",ObjRep));
+	click(contbilling,"ContinueBilling");
+	Thread.sleep(2000);
+	WebElement address=driver.findElement(By.xpath("//input[@id='contactAddress']"));
+	address.sendKeys("3450 granada ave");
+	
+	WebElement town=driver.findElement(By.xpath("//input[@id='contactCity']"));
+	town.sendKeys("Santa clara");
 	Thread.sleep(1000);
-	if(driver.findElement(By.xpath("//input[@class='xui-styledcheckboxradio--input']")).getAttribute("value").matches("on"))
-	{System.out.println("hudkj");
+	WebElement header=driver.findElement(By.xpath("//div[@id='postalAddress']//button[@type='button']"));
+	Thread.sleep(3000);
+	header.click();
+    WebElement option=driver.findElement(By.xpath(""));
+	Select s=new Select(header);
+	s.selectByValue("3");
 	Thread.sleep(1000);
-		driver.findElement(By.xpath("//span[@text='Starter']")).click();
-	}
-	else
-		System.out.println("not found");
-//	WebElement starterradio=driver.findElement(getLocator("Xerox.newuser.starterradio",ObjRep));
-//	click(starterradio,"StarterOption");
-//	wait.until(ExpectedConditions.elementToBeClickable(starterradio));
-//	WebElement contbilling=driver.findElement(getLocator("Xerox.newuser.contbilling",ObjRep));
-//	click(contbilling,"ContinueBilling");
-driver.close();
+	WebElement zipcode=driver.findElement(By.xpath("//input[@id='contactPostalCode']"));
+	zipcode.sendKeys("95051");
+	Thread.sleep(1000);
+
+	
+	//driver.close();
+
+WebElement cont=driver.findElement(getLocator("Xerox.billing.cont",ObjRep));
+click(cont,"ContinueBilling");
 }
 }

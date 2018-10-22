@@ -1,16 +1,11 @@
 import java.lang.reflect.Method;
-
 import org.testng.annotations.Test;
-
-
-
-
 public class DriverScriptTest extends Automation
 {@Test
 	public static void main() throws Exception
 	{
 		System.out.println("Helloworld");
-		String pathToReadXls="C:\\Users\\prade\\eclipse-workspace\\Xerox\\src\\test\\resources\\Utility\\TestSuit.xls";
+		String pathToReadXls="C:\\Users\\prade\\git\\repository3\\GitProjects\\Xero\\src\\test\\resources\\Utility\\TestSuit.xls";
 		Extent("sprint");
 		String[][] recData=MethodsToReuse.readSheet(pathToReadXls,"Sheet1");	
 		String flag=null;
@@ -31,6 +26,9 @@ public class DriverScriptTest extends Automation
 			System.out.println("**********Row  number "+ i+" test case Name "+ recData[i][2]+" is not Executed*********");
 			}
 		}	
+		
+		
 		extent.flush();
+		
 	}
 }

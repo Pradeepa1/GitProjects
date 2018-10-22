@@ -147,8 +147,8 @@ public static String[][] readSheet(String pathToReadXls,String sheetName) throws
 	for(int i=0; i<iRowCount; i++){
 		for(int j =1; j<iColCount; j++)
 		{
-			System.out.println("______"+i  +j);
-			System.out.println(sheet.getRow(i).getCell(j).getStringCellValue());				
+//			System.out.println("______"+i  +j);
+//			System.out.println(sheet.getRow(i).getCell(j).getStringCellValue());				
 			xlData[i][j]= sheet.getRow(i).getCell(j).getStringCellValue();
 		}			
 	}
@@ -170,7 +170,7 @@ public static void compareError(String actual,String Expected)
 public static String ScreenShot(WebDriver driver) throws Exception
 {
 	String path=System.getProperty("user.dir");
-	String destpath=path+"./src/ExtentReport/Screenshots/img.PNG";
+	String destpath=path+"./ExtentReport/Screenshots/img.PNG";
 	File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 	FileUtils.copyFile(src,new File(destpath),true);
 	return destpath;		
